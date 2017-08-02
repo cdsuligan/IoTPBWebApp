@@ -1,0 +1,14 @@
+#loginForm {
+    text-align: center;
+    display: inline-block;
+}
+
+#loginSubmitBtn {
+    text-align: center;
+    display: inline-block;
+}
+
+#inputerUsername, #inputPassword{
+    width: 150px;
+    text-align: center;
+}
