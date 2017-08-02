@@ -514,3 +514,16 @@ fieldset[disabled] .btn-success.active {
 div#maincontent {
   outline: none;
 }
+
+/*****************/
+/* CUSTOM CSS */
+/****************/
+.labels {
+  color: white;
+}
+
+.img-setCenter{
+  width: 100px;
+  height: 50px;
+}
+

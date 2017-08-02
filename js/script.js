@@ -5,26 +5,32 @@ function submitLogin(){
 
     alert("Reached submitLogin");
 
-    if (username.length < 1){
-        alert("Username is too short.");
-    }
-
-    else{
-        postUser(username, password);
-    }
+    postUser(username, password);
 }
 
 /* POST REQUEST */
 /* POST USERS(USERNAME, PASSWORD) */
 function postUser(username, password){
-    var xhr = new XMLHttpRequest();
-    var uri = "http://iotpbwebportal.azurewebsites.net/api/Users"
-    xhr.open('POST', uri, true);
+    /*var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Users/"
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            alert(xhr.responseText);
+        }
+    }
+    xhr.open('GET', uri, true);
+    xhr.send(null);*/
+    
+    /*var xhr = new XMLHttpRequest();
+    var uri = "http://iotpbwebsite.azurewebsites.net/api/Users"
+    //xhr.open('GET', uri, true);
+    xhr.open('GET', uri, true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onload = function () {
         // do something to response
         alert(this.responseText);
         console.log(this.responseText);
     };
-    xhr.send('user=person&pwd=password&organization=place&requiredkey=key');
+    //xhr.send('user=username&pwd=password');
+    xhr.send(null);*/
 }
