@@ -1,42 +1,43 @@
 /* SUBMIT LOGIN DETAILS */
 function submitLogin(){
-    var username = document.getElementById("inputerUsername").value;
-    var password = document.getElementById("inputPassword").value;
+    var username = document.getElementById("usernameLogin").value;
+    var password = document.getElementById("passwordLogin").value;
 
-    alert("Reached submitLogin");
-
+    //alert("Reached submitLogin");
     loginUser(username, password);
 }
 
 /* POST REQUEST */
 /* Logs in a user if the credentials are correct. */
 function loginUser(username, password){
-    /*var xhr = new XMLHttpRequest();
-    var uri = "http://iotpbwebsite.azurewebsites.net/api/Users"
-    xhr.open('POST', uri, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    message = {"Username": username, "Password":password};
-    xhr.send(JSON.stringify(message));
-    message = "";
-
-    xhr.onload = function () {
-        // do something to response
-        alert(this.responseText);
-        console.log(this.responseText);
-    };*/
-
     var xhr = new XMLHttpRequest();
-    var uri = "http://localhost:60724/api/Users"
+    var uri = "http://localhost:60724/api/Users/" + username
     xhr.open('GET', uri, true);
     xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-            //alert(xhr.responseText);
-            console.log(this.responseText);
-            window.location.href = "home.html";
-            //window.location.replace("http://stackoverflow.com");
+    xhr.onload = function() {
+        result = xhr.responseText;
+        result = result.replace(/['"]+/g, '');
+        resultList = result.split("_");
+        console.log(this.responseText);
+        if (xhr.status == "200") { //Username exists
+            if (String(password) == String(resultList[1])){ //Correct password
+                window.location.href = "home.html";
+                document.getElementById("usernameLogin").innerHTML = "";
+                document.getElementById("passwordLogin").innerHTML = "";
 
+           }
+           else{
+                alert("Login failed.");
+           }
+        } 
+        else {
+            alert("Unknown username.");
         }
+        // if (xhr.readyState == XMLHttpRequest.DONE) {
+        //     //alert(xhr.responseText);
+        //     window.location.href = "home.html";
+        //     //window.location.replace("http://stackoverflow.com");
+        // }
     }
     xhr.send(null);
 }
@@ -103,7 +104,7 @@ function deleteUser(username, password){
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = function() {
         //alert(xhr.responseText);
-        console.log(this.responseText);
+        console.log(this.responseText);        
         if (xhr.readyState == 4 && xhr.status == "200") {
             alert("Deleted " + username + " successfully.");
         } else {
