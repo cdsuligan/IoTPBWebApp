@@ -5,32 +5,115 @@ function submitLogin(){
 
     alert("Reached submitLogin");
 
-    postUser(username, password);
+    loginUser(username, password);
 }
 
 /* POST REQUEST */
-/* POST USERS(USERNAME, PASSWORD) */
-function postUser(username, password){
-    /*var xhr = new XMLHttpRequest();
-    var uri = "http://localhost:60724/api/Users/"
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-            alert(xhr.responseText);
-        }
-    }
-    xhr.open('GET', uri, true);
-    xhr.send(null);*/
-    
+/* Logs in a user if the credentials are correct. */
+function loginUser(username, password){
     /*var xhr = new XMLHttpRequest();
     var uri = "http://iotpbwebsite.azurewebsites.net/api/Users"
-    //xhr.open('GET', uri, true);
-    xhr.open('GET', uri, true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.open('POST', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    message = {"Username": username, "Password":password};
+    xhr.send(JSON.stringify(message));
+    message = "";
+
     xhr.onload = function () {
         // do something to response
         alert(this.responseText);
         console.log(this.responseText);
+    };*/
+
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Users"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            //alert(xhr.responseText);
+            console.log(this.responseText);
+            window.location.href = "home.html";
+            //window.location.replace("http://stackoverflow.com");
+
+        }
+    }
+    xhr.send(null);
+}
+
+
+/******************/
+/***** USERS ******/
+/******************/
+
+/* INITIALISE THE USERS WEBPAGE */
+function usersInit(){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Users"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        {
+            result = xhr.responseText;
+            resultList = result.split(" ");
+            resultListLen = resultList.length;
+            content = "";
+
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<tr><td class='TableDataUsername'>" + resultList[i] + "</td>" //username
+                i++;
+                //pass = "*".repeat(resultList[i].length)
+                //alert(pass);
+                content += "<td class='TableDataPassword'>" + resultList[i] + "</td>" //password
+                content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-minus-sign' style='color:black'></span></a></td></tr>";
+            }
+            version_d = document.getElementById("users-table-body");
+            version_d.innerHTML = content;
+
+            //CLICKED DELETE BUTTON
+            $(".deleteBtn").click(function() {
+                var $username = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataUsername") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($username);       // Outputs the answer
+
+                var $password = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataPassword") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($password);       // Outputs the answer
+                deleteUser($username, $password);
+            });
+        }
     };
-    //xhr.send('user=username&pwd=password');
-    xhr.send(null);*/
+    xhr.send(null);
+}
+
+/* DELETE A USER */
+/* WORKS!*/
+function deleteUser(username, password){
+    //alert("deleteUser: " + username + " " + password);
+
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Users/"+username
+    xhr.open('DELETE', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        alert(xhr.responseText);
+        console.log(this.responseText);
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            alert("Deleted " + username + " successfully.");
+        } else {
+            alert("Failed to delete " + username + ".");
+        }
+        version_d = document.getElementById("users-table-body");
+        version_d.innerHTML = "";
+        usersInit();
+    }
+    xhr.send(null);
+
+    
 }
