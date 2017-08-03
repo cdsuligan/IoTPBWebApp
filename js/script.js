@@ -67,7 +67,7 @@ function usersInit(){
                 //pass = "*".repeat(resultList[i].length)
                 //alert(pass);
                 content += "<td class='TableDataPassword'>" + resultList[i] + "</td>" //password
-                content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-minus-sign' style='color:black'></span></a></td></tr>";
+                content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
             }
             version_d = document.getElementById("users-table-body");
             version_d.innerHTML = content;
@@ -102,7 +102,7 @@ function deleteUser(username, password){
     xhr.open('DELETE', uri, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = function() {
-        alert(xhr.responseText);
+        //alert(xhr.responseText);
         console.log(this.responseText);
         if (xhr.readyState == 4 && xhr.status == "200") {
             alert("Deleted " + username + " successfully.");
@@ -115,5 +115,36 @@ function deleteUser(username, password){
     }
     xhr.send(null);
 
+    
+}
+
+/* ADD A USER */
+function addUser () {
+    username = document.getElementById("usernameInput").value;
+    password = document.getElementById("passwordInput").value;
+    //alert(username + " " + password);
+
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Users/"
+    xhr.open('POST', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    message = {"Username":username, "Password":password};
+    xhr.send(JSON.stringify(message));
+    
+    message = "";
+
+
+    xhr.onload = function() {
+        //alert(xhr.responseText);
+        console.log(this.responseText);
+        if (xhr.readyState == 4 && xhr.status == "201") {
+            alert("Added " + username + " successfully.");
+        } else {
+            alert("Failed to add " + username + ".");
+        }
+        username = "";
+        password = "";
+        usersInit();
+    }
     
 }

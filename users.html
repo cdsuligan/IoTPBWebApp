@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Home</title>
+    <title>Users</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -49,21 +49,49 @@
                     </div>
                 </div>
             </div>
-            <div class="main-content">
+            <div class="main-content" style="overflow-x:auto;">
                 <h3 class="main-content-header"></h3>
                 <table class="table">
                     <thead class="thead-inverse">
                         <tr>
-                        <th>Username</th>
-                        <th>Password</th>
+                        <th><h4>Username</h4></th>
+                        <th><h4>Password</h4></th>
                         </tr>
                     </thead>
-                    <tbody id="users-table-body">
+                    <tbody id="users-table-body" style="text-align:left">
                     </tbody>
                 </table>
+                <div style="text-align: left;"><a href='#' class='addBtn' data-toggle="modal" data-target="#myModal"><span class='glyphicon glyphicon-plus-sign' style='color:white;'></span><h6 class="addNew" style="color:white; margin-left:10px; display:inline-block;">Add a new user</h6></a></div>
             </div>
         </div>
     </header>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add a new user</h4>
+            </div>
+            <div class="modal-body">
+            <p></p>
+            <form class="form-inline" >
+                <label for="addUser" class="sr-only" id="usernameInputLabel">Username</label>                <input type="text" placeholder="Username" data-minlength="1" maxlength="50" class="form-control" id="usernameInput" required>
+
+                <label for="addUser" class="sr-only" id="passwordInputLabel">Password</label>
+                <input type="text" placeholder="Password" data-minlength="1" maxlength="50" class="form-control" id="passwordInput" required>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="addUser();" id="addUserSubmit" class="btn btn-default ">Submit</button>            
+            </div>
+        </div>
+        
+        </div>
+    </div>
+
 
     <!-- Custom JavaScript -->
     <script src="js/script.js"></script>
