@@ -56,6 +56,7 @@
                         <tr>
                         <th><h4>Username</h4></th>
                         <th><h4>Password</h4></th>
+                        <th><h4>Admin</h4></th>
                         </tr>
                     </thead>
                     <tbody id="users-table-body" style="text-align:left">
@@ -78,10 +79,12 @@
             <div class="modal-body">
             <p></p>
             <form class="form-inline" >
-                <label for="addUser" class="sr-only" id="usernameInputLabel">Username</label>                <input type="text" placeholder="Username" data-minlength="1" maxlength="50" class="form-control" id="usernameInput" required>
-
+                <label for="addUser" class="sr-only" id="usernameInputLabel">Username</label>                
+                <input type="text" placeholder="Username" data-minlength="1" maxlength="50" class="form-control" id="usernameInput" required>
                 <label for="addUser" class="sr-only" id="passwordInputLabel">Password</label>
                 <input type="text" placeholder="Password" data-minlength="1" maxlength="50" class="form-control" id="passwordInput" required>
+                <input type="checkbox" name="Admin" value="True" id="adminInput"> Admin<br>
+
             </form>
             </div>
             <div class="modal-footer">

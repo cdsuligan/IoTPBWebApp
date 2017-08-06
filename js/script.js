@@ -56,7 +56,7 @@ function usersInit(){
     xhr.onload = function() {
         {
             result = xhr.responseText;
-            resultList = result.split(" ");
+            resultList = result.split("~");
             resultListLen = resultList.length;
             content = "";
 
@@ -65,9 +65,15 @@ function usersInit(){
             for (i=0; i<resultListLen-1; i++){
                 content += "<tr><td class='TableDataUsername'>" + resultList[i] + "</td>" //username
                 i++;
-                //pass = "*".repeat(resultList[i].length)
-                //alert(pass);
                 content += "<td class='TableDataPassword'>" + resultList[i] + "</td>" //password
+                i++;
+                if (resultList[i] == 1){
+                    content += "<td class='TableDataAdmin'>" + "Yes" + "</td>" //admin
+                }
+
+                else{
+                    content += "<td class='TableDataAdmin'></td>" //admin
+                }
                 content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
             }
             version_d = document.getElementById("users-table-body");
@@ -86,7 +92,7 @@ function usersInit(){
                                 .text();    // Retrieves the text within <td>
 
                 $("#resultas").append($password);       // Outputs the answer
-                deleteUser($username, $password);
+                deleteUser($username);
             });
         }
     };
@@ -95,7 +101,7 @@ function usersInit(){
 
 /* DELETE A USER */
 /* WORKS!*/
-function deleteUser(username, password){
+function deleteUser(username){
     //alert("deleteUser: " + username + " " + password);
 
     var xhr = new XMLHttpRequest();
@@ -123,13 +129,23 @@ function deleteUser(username, password){
 function addUser () {
     username = document.getElementById("usernameInput").value;
     password = document.getElementById("passwordInput").value;
+    adminCheck = document.getElementById("adminInput");
+    admin = "";
+
+    if (adminCheck.checked){
+        admin = "1";
+    }
+    else{
+        admin = "0";
+    }
+
     //alert(username + " " + password);
 
     var xhr = new XMLHttpRequest();
     var uri = "http://localhost:60724/api/Users/"
     xhr.open('POST', uri, true);
     xhr.setRequestHeader('Content-type', 'application/json');
-    message = {"Username":username, "Password":password};
+    message = {"Username":username, "Password":password, "Admin":admin};
     xhr.send(JSON.stringify(message));
     
     message = "";
@@ -146,6 +162,89 @@ function addUser () {
         username = "";
         password = "";
         usersInit();
+    }
+    
+}
+
+/**********************/
+/***** LOCATIONS ******/
+/**********************/
+/* INITIALISE THE LOCATIONS WEBPAGE */
+function locationsInit(){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Locations"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        {
+            result = xhr.responseText;
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<tr><td class='TableDataLocationName'>" + resultList[i] + "</td>" //username
+                i++;
+                //pass = "*".repeat(resultList[i].length)
+                //alert(pass);
+                content += "<td class='TableDataLocationDesc'>" + resultList[i] + "</td>" //password
+                content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
+            }
+            version_d = document.getElementById("locations-table-body");
+            version_d.innerHTML = content;
+
+            //CLICKED DELETE BUTTON
+            $(".deleteBtn").click(function() {
+                var $locationName = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataLocationName") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($locationName);       // Outputs the answer
+
+                var $locationDesc = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataLocationDesc") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($locationDesc);       // Outputs the answer
+                deleteLocation($locationName, $locationDesc);
+            });
+        }
+    };
+    xhr.send(null);
+}
+
+
+
+
+
+
+
+/* ADD A LOCATION */
+function addLocation () {
+    locationName = document.getElementById("locationNameInput").value;
+    locationDesc = document.getElementById("locationDescInput").value;
+    alert(locationName + " " + locationDesc);
+
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Locations/"
+    xhr.open('POST', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    message = {"LocationName":locationName, "LocationDesc":locationDesc};
+    xhr.send(JSON.stringify(message));
+    
+    message = "";
+
+    xhr.onload = function() {
+        //alert(xhr.responseText);
+        console.log(this.responseText);
+        if (xhr.readyState == 4 && xhr.status == "201") {
+            alert("Added new location '" + locationName + "' successfully.");
+        } else {
+            alert("Failed to add location'" + locationName + "'.");
+        }
+        locationsInit();
     }
     
 }
