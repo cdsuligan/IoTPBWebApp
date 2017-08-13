@@ -276,7 +276,7 @@ function locationsInit(){
 function addLocation () {
     locationName = document.getElementById("locationNameInput").value;
     locationDesc = document.getElementById("locationDescInput").value;
-    alert(locationName + " " + locationDesc);
+    //alert(locationName + " " + locationDesc);
 
     var xhr = new XMLHttpRequest();
     var uri = "http://localhost:60724/api/Locations/" 
@@ -440,7 +440,7 @@ function devicesInit(){
     xhr.send(null);
 }
 
-
+/* DELETE A DEVICE */
 function deleteDevice(deviceID, deviceName){
     var xhr = new XMLHttpRequest();
     var uri = "http://localhost:60724/api/Devices/" + deviceID;
@@ -453,9 +453,173 @@ function deleteDevice(deviceID, deviceName){
         if (xhr.readyState == 4 && xhr.status == "200") {
             alert("Deleted device '" + deviceName + "' successfully.");
         } else {
-            alert("Failed to delete device'" + deviceName + "'.");
+            alert("Failed to delete device '" + deviceName + "'.");
         }
         devicesInit();
     }
     xhr.send(null);
 }
+
+/* ADD A NEW DEVICE */
+function addDevice() {
+    
+    deviceName = document.getElementById("deviceNameInput").value;
+
+    deviceLocation = document.getElementById("deviceLocations");
+    deviceLocation2 = deviceLocation.options[deviceLocation.selectedIndex].value;
+
+    deviceType = document.getElementById("deviceTypes");
+    deviceType2 = deviceType.options[deviceType.selectedIndex].value;
+
+    deviceProtocol = document.getElementById("deviceProtocols");
+    deviceProtocol2 = deviceProtocol.options[deviceProtocol.selectedIndex].value;
+
+    deviceStatus = document.getElementById("deviceStatus");
+    deviceStatus2 = deviceStatus.options[deviceStatus.selectedIndex].value;
+
+    deviceAddress = document.getElementById("deviceAddressInput").value;
+    
+    //var e = document.getElementById("ddlViewBy");
+    //var strUser = e.options[e.selectedIndex].value;
+    
+    //alert(locationName + " " + locationDesc);
+
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Devices/" 
+    xhr.open('POST', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    message = {"DeviceName":deviceName, "DeviceLocation":deviceLocation2, "DeviceTypeID":deviceType2, "ProtocolID":deviceProtocol2, "StatusID":deviceStatus2, "DeviceAddress":deviceAddress};
+    xhr.send(JSON.stringify(message));
+    
+    //alert("message: " + JSON.stringify(message));
+
+    message = "";
+    xhr.onload = function() {
+        //alert(xhr.responseText);
+        console.log(this.responseText);
+        if (xhr.readyState == 4 && xhr.status == "201") {
+            alert("Added new device '" + deviceName + "' successfully.");
+        } else {
+            alert("Failed to add device '" + deviceName + "'.");
+        }
+        devicesInit();
+    }
+    
+}
+
+
+
+/* SET UP ADD NEW DEVICE MODAL */
+function setUpDevicesModal(){
+    getLocations();
+    getDeviceTypes();
+    getProtocols();
+    getStatus();
+}
+
+/* GET LOCATIONS LIST */
+function getLocations(){
+    
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Locations"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<option value='" + resultList[i] + "'>" //locationID
+                i++;
+                content += resultList[i] + "</option>" //locationID
+                i++;
+            }
+            version_d = document.getElementById("deviceLocations");
+            version_d.innerHTML = content;
+    }
+    xhr.send(null);
+}
+
+/* GET DEVICE TYPES LIST */
+function getDeviceTypes(){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/DeviceTypes"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<option value='" + resultList[i] + "'>" //locationID
+                i++;
+                content += resultList[i] + "</option>" //locationID
+            }
+            version_d = document.getElementById("deviceTypes");
+            version_d.innerHTML = content;
+    }
+    xhr.send(null);
+}
+
+/* GET PROTOCOLS LIST */
+function getProtocols(){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Protocols"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<option value='" + resultList[i] + "'>" //locationID
+                i++;
+                content += resultList[i] + "</option>" //locationID
+            }
+            version_d = document.getElementById("deviceProtocols");
+            version_d.innerHTML = content;
+    }
+    xhr.send(null);
+}
+
+
+/* GET PROTOCOLS LIST */
+function getStatus(){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Status"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<option value='" + resultList[i] + "'>" //locationID
+                i++;
+                content += resultList[i] + "</option>" //locationID
+            }
+            version_d = document.getElementById("deviceStatus");
+            version_d.innerHTML = content;
+    }
+    xhr.send(null);
+}
+
+
+
+
