@@ -319,3 +319,143 @@ function deleteLocation(locationID, locationName, locationDesc){
     }
     xhr.send(null);
 }
+
+
+/****************************/
+/***** LOCATION ACCESS ******/
+/****************************/
+/* INITIALISE THE LOCATION ACCESS WEBPAGE */
+/*function locationAccessInit(){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/LocationAccesses"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<tr><td style='display:none' class='TableDataLocationAccessID'>" + resultList[i] + "</td>" //username
+                i++;
+                //pass = "*".repeat(resultList[i].length)
+                //alert(pass);
+                content += "<td class='TableDataLocationNames'>" + resultList[i] + "</td>" //password
+                i++;
+                content += "<td class='TableDataUsers'>" + resultList[i] + "</td>" //password
+                content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
+            }
+            version_d = document.getElementById("locations-table-body");
+            version_d.innerHTML = content;
+
+            //CLICKED DELETE BUTTON
+            $(".deleteBtn").click(function() {
+                var $locationID = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataLocationID") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($locationID);       // Outputs the answer
+
+                var $locationName = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataLocationName") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($locationName);       // Outputs the answer
+
+                var $locationDesc = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataLocationDesc") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($locationDesc);       // Outputs the answer
+
+                
+                deleteLocation($locationID, $locationName, $locationDesc);
+            });
+        }
+    };
+    xhr.send(null);
+}*/
+
+/********************/
+/***** DEVICES ******/
+/********************/
+/* INITIALISE THE DEVICES WEBPAGE */
+function devicesInit(){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Devices"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<tr><td style='display:none' class='TableDataDeviceID'>" + resultList[i] + "</td>" //username
+                i++;
+                content += "<td class='TableDataDeviceName'>" + resultList[i] + "</td>" //DeviceName
+                i++;
+                content += "<td class='TableDataDeviceLocation'>" + resultList[i] + "</td>" //DeviceLocation
+                i++;
+                content += "<td class='TableDataDeviceType'>" + resultList[i] + "</td>" //DeviceType
+                i++;
+                content += "<td class='TableDataDeviceProtocol'>" + resultList[i] + "</td>" //DeviceProtocol
+                i++;
+                content += "<td class='TableDataDeviceStatus'>" + resultList[i] + "</td>" //DeviceStatus
+                i++;
+                content += "<td class='TableDataDeviceAddress'>" + resultList[i] + "</td>" //DeviceAddress
+                content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
+            }
+            version_d = document.getElementById("locations-table-body");
+            version_d.innerHTML = content;
+
+            //CLICKED DELETE BUTTON
+            $(".deleteBtn").click(function() {
+                var $deviceID = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataDeviceID") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($deviceID);       // Outputs the answer
+
+                var $deviceName = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataDeviceName") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($deviceName);       // Outputs the answer
+                
+                deleteDevice($deviceID, $deviceName);
+            });
+        }
+    };
+    xhr.send(null);
+}
+
+
+function deleteDevice(deviceID, deviceName){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Devices/" + deviceID;
+    xhr.open('DELETE', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+
+    xhr.onload = function() {
+        //alert(xhr.responseText);
+        console.log(this.responseText);
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            alert("Deleted device '" + deviceName + "' successfully.");
+        } else {
+            alert("Failed to delete device'" + deviceName + "'.");
+        }
+        devicesInit();
+    }
+    xhr.send(null);
+}
