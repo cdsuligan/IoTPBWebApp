@@ -507,8 +507,6 @@ function addDevice() {
     
 }
 
-
-
 /* SET UP ADD NEW DEVICE MODAL */
 function setUpDevicesModal(){
     getLocations();
