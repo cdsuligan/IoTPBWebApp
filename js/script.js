@@ -23,7 +23,9 @@ function loginUser(username, password){
             console.log(resultList);
             if (String(password) == String(resultList[1])){ //Correct password
                 window.location.href = "home.html";
-                saveCredentials(username, password);
+                //saveCredentials(username, password);
+                localStorage.setItem("currentUser", username);
+                alert("Username: "+ username);
                 //document.getElementById("usernameLogin").innerHTML = "";
                 //document.getElementById("passwordLogin").innerHTML = "";
            }
@@ -52,35 +54,31 @@ function loginUser(username, password){
 
 /* CHECKS IF THE USER LOGGED IN IS AN ADMIN */
 /*function isAdmin(){
-    $(function(){
-        $.get('index.html', function(result){
-            var  = $(result).find('usernameLogin');
-            //var page1X = $(result).find('div.myData').data('x');
-            //var page1Y = $(result).find('div.myData').data('y');
-        });
-    });
-
-    
-    usernameLogin = document.getElementById("usernameLogin").value;
+    usernameLogin = localStorage.getItem("currentUser"); // you will have to parse
     alert("usernameLogin: " + usernameLogin);
-    //usernameLogin = getValue ("usernameLogin", "index.html");
     var xhr = new XMLHttpRequest();
     var uri = "http://localhost:60724/api/Users/" + usernameLogin;
     
     xhr.open('GET', uri, true);
     xhr.setRequestHeader('Content-type', 'application/json');
+
+    resultList = "";
+
     xhr.onload = function() {
-        alert(xhr.responseText);
+        //alert("SUCCESS HERE");
         result = xhr.responseText;
+        result = result.replace(/['"]+/g, '');
         resultList = result.split("~");
         resultListLen = resultList.length;
+    }
+    xhr.send(null);
 
-        if (resultList[2] == "1"){
-            return true;
-        }
-        else{
-            return false;
-        }
+    if (resultList[2] != 1){
+        alert("resultList:" + resultList[1]. + " " + resultList[2]);
+        return "no";
+    }
+    else{
+        return "yes";
     }
 
 }*/
@@ -169,7 +167,9 @@ function deleteUser(username){
 
 /* ADD A USER */
 function addUser () {
-    /*if (isAdmin() == false){ //Not an admin
+    /*userIsAdmin = isAdmin();
+    //alert("userIsAdmin: "+ userIsAdmin);
+    if (userIsAdmin == "no"){ //Not an admin
         alert ("Sorry, you do not have the permission to add a new user.");
     }
     else {*/
@@ -208,7 +208,6 @@ function addUser () {
         password = "";
         usersInit();
     }
-
 }
 
 /**********************/
