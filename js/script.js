@@ -2,7 +2,7 @@
 function submitLogin(){
     var username = document.getElementById("usernameLogin").value;
     var password = document.getElementById("passwordLogin").value;
-
+    //alert("username: " + username);
     //alert("Reached submitLogin");
     loginUser(username, password);
 }
@@ -11,20 +11,21 @@ function submitLogin(){
 /* Logs in a user if the credentials are correct. */
 function loginUser(username, password){
     var xhr = new XMLHttpRequest();
-    var uri = "http://localhost:60724/api/Users/" + username
+    var uri = "http://localhost:60724/api/Users/" + username;
     xhr.open('GET', uri, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = function() {
         result = xhr.responseText;
         result = result.replace(/['"]+/g, '');
-        resultList = result.split("_");
+        resultList = result.split("~");
         console.log(this.responseText);
         if (xhr.status == "200") { //Username exists
+            console.log(resultList);
             if (String(password) == String(resultList[1])){ //Correct password
                 window.location.href = "home.html";
-                document.getElementById("usernameLogin").innerHTML = "";
-                document.getElementById("passwordLogin").innerHTML = "";
-
+                saveCredentials(username, password);
+                //document.getElementById("usernameLogin").innerHTML = "";
+                //document.getElementById("passwordLogin").innerHTML = "";
            }
            else{
                 alert("Login failed.");
@@ -33,15 +34,56 @@ function loginUser(username, password){
         else {
             alert("Unknown username.");
         }
-        // if (xhr.readyState == XMLHttpRequest.DONE) {
-        //     //alert(xhr.responseText);
-        //     window.location.href = "home.html";
-        //     //window.location.replace("http://stackoverflow.com");
-        // }
     }
     xhr.send(null);
 }
 
+
+
+/* GET VALUE OF AN ELEMENT IN A DIFFERENT HTML PAGE USING ID */
+/* NOT WORKING */
+/*function getValue(elementID, elementPage){
+    $.get(elementPage, null, function(text){
+        return($(text).find(elementID));
+    });
+}*/
+
+
+
+/* CHECKS IF THE USER LOGGED IN IS AN ADMIN */
+/*function isAdmin(){
+    $(function(){
+        $.get('index.html', function(result){
+            var  = $(result).find('usernameLogin');
+            //var page1X = $(result).find('div.myData').data('x');
+            //var page1Y = $(result).find('div.myData').data('y');
+        });
+    });
+
+    
+    usernameLogin = document.getElementById("usernameLogin").value;
+    alert("usernameLogin: " + usernameLogin);
+    //usernameLogin = getValue ("usernameLogin", "index.html");
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Users/" + usernameLogin;
+    
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        alert(xhr.responseText);
+        result = xhr.responseText;
+        resultList = result.split("~");
+        resultListLen = resultList.length;
+
+        if (resultList[2] == "1"){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+}*/
 
 /******************/
 /***** USERS ******/
@@ -102,8 +144,10 @@ function usersInit(){
 /* DELETE A USER */
 /* WORKS!*/
 function deleteUser(username){
-    //alert("deleteUser: " + username + " " + password);
-
+    /*if (isAdmin() == false){ //Not an admin
+        alert ("Sorry, you do not have the permission to delete a  user.");
+    }
+    else {*/
     var xhr = new XMLHttpRequest();
     var uri = "http://localhost:60724/api/Users/"+username
     xhr.open('DELETE', uri, true);
@@ -121,12 +165,14 @@ function deleteUser(username){
         usersInit();
     }
     xhr.send(null);
-
-    
 }
 
 /* ADD A USER */
 function addUser () {
+    /*if (isAdmin() == false){ //Not an admin
+        alert ("Sorry, you do not have the permission to add a new user.");
+    }
+    else {*/
     username = document.getElementById("usernameInput").value;
     password = document.getElementById("passwordInput").value;
     adminCheck = document.getElementById("adminInput");
@@ -150,7 +196,6 @@ function addUser () {
     
     message = "";
 
-
     xhr.onload = function() {
         //alert(xhr.responseText);
         console.log(this.responseText);
@@ -163,7 +208,7 @@ function addUser () {
         password = "";
         usersInit();
     }
-    
+
 }
 
 /**********************/
@@ -178,6 +223,7 @@ function locationsInit(){
     xhr.onload = function() {
         {
             result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
             resultList = result.split("~");
             resultListLen = resultList.length;
             content = "";
@@ -185,10 +231,12 @@ function locationsInit(){
             console.log(this.responseText);
 
             for (i=0; i<resultListLen-1; i++){
-                content += "<tr><td class='TableDataLocationName'>" + resultList[i] + "</td>" //username
+                content += "<tr><td style='display:none' class='TableDataLocationID'>" + resultList[i] + "</td>" //username
                 i++;
                 //pass = "*".repeat(resultList[i].length)
                 //alert(pass);
+                content += "<td class='TableDataLocationName'>" + resultList[i] + "</td>" //password
+                i++;
                 content += "<td class='TableDataLocationDesc'>" + resultList[i] + "</td>" //password
                 content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
             }
@@ -197,6 +245,12 @@ function locationsInit(){
 
             //CLICKED DELETE BUTTON
             $(".deleteBtn").click(function() {
+                var $locationID = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataLocationID") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($locationID);       // Outputs the answer
+
                 var $locationName = $(this).closest("tr")   // Finds the closest row <tr> 
                                 .find(".TableDataLocationName") // Gets a descendent with class="nr"
                                 .text();    // Retrieves the text within <td>
@@ -208,17 +262,14 @@ function locationsInit(){
                                 .text();    // Retrieves the text within <td>
 
                 $("#resultas").append($locationDesc);       // Outputs the answer
-                deleteLocation($locationName, $locationDesc);
+
+                
+                deleteLocation($locationID, $locationName, $locationDesc);
             });
         }
     };
     xhr.send(null);
 }
-
-
-
-
-
 
 
 /* ADD A LOCATION */
@@ -228,7 +279,7 @@ function addLocation () {
     alert(locationName + " " + locationDesc);
 
     var xhr = new XMLHttpRequest();
-    var uri = "http://localhost:60724/api/Locations/"
+    var uri = "http://localhost:60724/api/Locations/" 
     xhr.open('POST', uri, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     message = {"LocationName":locationName, "LocationDesc":locationDesc};
@@ -247,4 +298,24 @@ function addLocation () {
         locationsInit();
     }
     
+}
+
+function deleteLocation(locationID, locationName, locationDesc){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Locations/" + locationID;
+    xhr.open('DELETE', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    //message = {"LocationName":locationName, "LocationDesc":locationDesc};
+
+    xhr.onload = function() {
+        //alert(xhr.responseText);
+        console.log(this.responseText);
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            alert("Deleted location '" + locationName + "' successfully.");
+        } else {
+            alert("Failed to delete location'" + locationName + "'.");
+        }
+        locationsInit();
+    }
+    xhr.send(null);
 }
