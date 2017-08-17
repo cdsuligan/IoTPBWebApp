@@ -25,7 +25,6 @@ function loginUser(username, password){
                 window.location.href = "home.html";
                 //saveCredentials(username, password);
                 localStorage.setItem("currentUser", username);
-                alert("Username: "+ username);
                 //document.getElementById("usernameLogin").innerHTML = "";
                 //document.getElementById("passwordLogin").innerHTML = "";
            }
@@ -228,7 +227,6 @@ function locationsInit(){
             content = "";
 
             console.log(this.responseText);
-
             for (i=0; i<resultListLen-1; i++){
                 content += "<tr><td style='display:none' class='TableDataLocationID'>" + resultList[i] + "</td>" //username
                 i++;
@@ -320,65 +318,7 @@ function deleteLocation(locationID, locationName, locationDesc){
 }
 
 
-/****************************/
-/***** LOCATION ACCESS ******/
-/****************************/
-/* INITIALISE THE LOCATION ACCESS WEBPAGE */
-/*function locationAccessInit(){
-    var xhr = new XMLHttpRequest();
-    var uri = "http://localhost:60724/api/LocationAccesses"
-    xhr.open('GET', uri, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.onload = function() {
-        {
-            result = xhr.responseText;
-            result = result.replace(/['"]+/g, '');
-            resultList = result.split("~");
-            resultListLen = resultList.length;
-            content = "";
 
-            console.log(this.responseText);
-
-            for (i=0; i<resultListLen-1; i++){
-                content += "<tr><td style='display:none' class='TableDataLocationAccessID'>" + resultList[i] + "</td>" //username
-                i++;
-                //pass = "*".repeat(resultList[i].length)
-                //alert(pass);
-                content += "<td class='TableDataLocationNames'>" + resultList[i] + "</td>" //password
-                i++;
-                content += "<td class='TableDataUsers'>" + resultList[i] + "</td>" //password
-                content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
-            }
-            version_d = document.getElementById("locations-table-body");
-            version_d.innerHTML = content;
-
-            //CLICKED DELETE BUTTON
-            $(".deleteBtn").click(function() {
-                var $locationID = $(this).closest("tr")   // Finds the closest row <tr> 
-                                .find(".TableDataLocationID") // Gets a descendent with class="nr"
-                                .text();    // Retrieves the text within <td>
-
-                $("#resultas").append($locationID);       // Outputs the answer
-
-                var $locationName = $(this).closest("tr")   // Finds the closest row <tr> 
-                                .find(".TableDataLocationName") // Gets a descendent with class="nr"
-                                .text();    // Retrieves the text within <td>
-
-                $("#resultas").append($locationName);       // Outputs the answer
-
-                var $locationDesc = $(this).closest("tr")   // Finds the closest row <tr> 
-                                .find(".TableDataLocationDesc") // Gets a descendent with class="nr"
-                                .text();    // Retrieves the text within <td>
-
-                $("#resultas").append($locationDesc);       // Outputs the answer
-
-                
-                deleteLocation($locationID, $locationName, $locationDesc);
-            });
-        }
-    };
-    xhr.send(null);
-}*/
 
 /********************/
 /***** DEVICES ******/
@@ -620,3 +560,38 @@ function getStatus(){
 
 
 
+/****************************/
+/***** LOCATION ACCESS ******/
+/****************************/
+/* INITIALISE THE LOCATION ACCESS WEBPAGE */
+function locationAccessInit(){
+        var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/LocationAccesses"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    var arr = "";
+    xhr.onload = function (){
+        arr = JSON.parse(xhr.responseText);
+
+        for (var i = 0; i < arr.length; i++){ //5 Objects (each row in the table)
+            obj = arr[i]; 
+
+            for (key in obj){ //key => "Location", "User", "LocationID", etc.       
+                //alert("key: " + JSON.stringify(key) + "value: " + JSON.stringify(obj[key]));
+    
+                newKey = JSON.stringify(key);
+                value = JSON.stringify(obj[key]); //Must be below key
+                newKey = newKey.replace(/['"]+/g, '');  
+                value = value.replace(/['"]+/g, '');  
+                if((newKey != "Location") && (newKey != "User") )
+
+                {
+                    alert("newKey: " + newKey + "value: " + value);
+                }
+            }
+
+        }
+
+    }
+    xhr.send(null);
+}
