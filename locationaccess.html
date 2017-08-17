@@ -62,32 +62,32 @@
                     <tbody id="locationaccesses-table-body" style="text-align:left">
                     </tbody>
                 </table>
-                <div style="text-align: left;"><a href='#' class='addBtn' data-toggle="modal" data-target="#addLocationAccessesModal"><span class='glyphicon glyphicon-plus-sign' style='color:white;'></span><h6 class="addNew" style="color:white; margin-left:10px; display:inline-block;">Add a new location</h6></a></div>
+                <div style="text-align: left;"><a href='#' class='addBtn' data-toggle="modal" data-target="#addLocationAccessesModal"><span class='glyphicon glyphicon-plus-sign' style='color:white;'></span><h6 class="addNew" style="color:white; margin-left:10px; display:inline-block;">Allocate new access right</h6></a></div>
             </div>
         </div>
     </header>
 
     <!-- Modal -->
-    <div class="modal fade" id="addLocationModal" role="dialog">
+    <div class="modal fade" id="addLocationAccessModal" role="dialog">
         <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add a new location</h4>
+            <h4 class="modal-title">Add a new device</h4>
             </div>
             <div class="modal-body">
             <p></p>
-            <form class="form-inline" >
-                <label for="addLocation" class="sr-only" id="locationNameInputLabel">Location</label>                
-                <input type="text" placeholder="Location" data-minlength="1" maxlength="50" class="form-control" id="locationNameInput" required>
+            <form class="form-inline" >                
+                <select name="locationAccesses" id="locationsLA">
+                </select>
 
-                <label for="addLocation" class="sr-only" id="locationDescInputLabel">Description</label>
-                <input type="text" placeholder="Description" maxlength="50" class="form-control" id="locationDescInput" required>
+                <select name="locationAccesses" id="usersLA">
+                </select>
             </form>
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="addLocation();" id="addLocationSubmit" class="btn btn-default ">Submit</button>            
+                <button type="button" onclick="addLocationAccess();" id="addLocationAccessSubmit" class="btn btn-default ">Submit</button>            
             </div>
         </div>
         

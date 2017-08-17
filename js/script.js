@@ -566,41 +566,80 @@ function getStatus(){
 /* INITIALISE THE LOCATION ACCESS WEBPAGE */
 function locationAccessInit(){
     var xhr = new XMLHttpRequest();
-    var uri = "http://localhost:60724/api/LocationAccesses"
+    var uri = "http://localhost:60724/api//LocationAccesses"
     xhr.open('GET', uri, true);
     xhr.setRequestHeader('Content-type', 'application/json');
-    var arr = "";
-    var lIDdict = []; 
-    var laIDdict = [];
-    xhr.onload = function (){
-        arr = JSON.parse(xhr.responseText);
-        content = "";
-        for (var i = 0; i < arr.length; i++){ //5 Objects (each row in the table)
-            obj = arr[i];     
-            alert("here!!!");  
-            var locationIDLA = JSON.stringify(obj["LocationID"]); //LocationID
-            alert("lcoationIDLA: " + locationIDLA);
-            locationIDLA = value.replace(/['"]+/g, '');  
-            var userLA = JSON.stringify(obj["Username"]); //Username
-            userLA = value.replace(/['"]+/g, '');  
-            var locationAccessIDLA = JSON.stringify(obj["LocationAccessID"]); //LocationAccessID
-            locationAccessIDLA = value.replace(/['"]+/g, '');  
-            alert("ANOTHER HERE");
-            content += "<tr><td style='display:none' class='TableDataLocationAccessIDLA'>" + locationAccessIDLA + "</td>" //username
-            i++;
-            content += "<td class='TableDataLocationIDLA'>" + locationIDLA + "</td>" //DeviceName
-            i++;
-            content += "<td class='TableDataUserLA'>" + userLA + "</td>" //DeviceLocation
-            content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
-        }
-        console.log(dict);
-        version_d = document.getElementById("locationaccesses-table-body");
-        version_d.innerHTML = content;
-        //alert("dict: " + dict.toString());
+    xhr.onload = function() {
+        {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
 
+            console.log(this.responseText);
+            for (i=0; i<resultListLen-1; i++){
+                content += "<tr><td style='display:none' class='TableDataLocationAccessIDLA'>" + resultList[i] + "</td>" //username
+                i++;
+                //pass = "*".repeat(resultList[i].length)
+                //alert(pass);
+                content += "<td class='TableDataLocationIDLA'>" + resultList[i] + "</td>" //password
+                i++;
+                content += "<td class='TableDataUsernameLA'>" + resultList[i] + "</td>" //password
+                content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
+            }
+            version_d = document.getElementById("locationaccesses-table-body");
+            version_d.innerHTML = content;
+
+            //CLICKED DELETE BUTTON
+            $(".deleteBtn").click(function() {
+                var $locationAccessIDLA = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataLocationAccessIDLA") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($locationAccessIDLA);       // Outputs the answer
+
+                var $locationIDLA = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataLocationIDLA") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($locationIDLA);       // Outputs the answer
+
+                var $usernameLA = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".TableDataUsernameLA") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($usernameLA);       // Outputs the answer
+
+                
+                deleteLocationAccess($locationAccessIDLA, $locationIDLA, $usernameLA);
+            });
+        }
+    };
+    xhr.send(null);
+}
+
+/* DELETE A DEVICE */
+function deleteLocationAccess(locationAccessIDLA, locationIDLA, usernameLA){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/LocationAccesses/" + locationAccessIDLA;
+    xhr.open('DELETE', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+
+    xhr.onload = function() {
+        //alert(xhr.responseText);
+        console.log(this.responseText);
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            alert("Deleted '" + usernameLA + "'s access for location '"+ locationAccessIDLA + "' successfully.");
+        } else {
+            alert("Failed to delete location access for '" + usernameLA + "'.");
+        }
+        locationAccessInit();
     }
     xhr.send(null);
 }
+
+
 
 
 /*$(document).ready(function() {
