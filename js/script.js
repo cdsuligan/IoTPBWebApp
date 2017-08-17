@@ -104,7 +104,7 @@ function usersInit(){
             for (i=0; i<resultListLen-1; i++){
                 content += "<tr><td class='TableDataUsername'>" + resultList[i] + "</td>" //username
                 i++;
-                content += "<td class='TableDataPassword'>" + resultList[i] + "</td>" //password
+                content += "<td class='TableDataPassword'>&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;</td>" //password
                 i++;
                 if (resultList[i] == 1){
                     content += "<td class='TableDataAdmin'>" + "Yes" + "</td>" //admin
