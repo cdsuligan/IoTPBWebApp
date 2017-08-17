@@ -565,33 +565,44 @@ function getStatus(){
 /****************************/
 /* INITIALISE THE LOCATION ACCESS WEBPAGE */
 function locationAccessInit(){
-        var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
     var uri = "http://localhost:60724/api/LocationAccesses"
     xhr.open('GET', uri, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     var arr = "";
+    var lIDdict = []; 
+    var laIDdict = [];
     xhr.onload = function (){
         arr = JSON.parse(xhr.responseText);
-
+        content = "";
         for (var i = 0; i < arr.length; i++){ //5 Objects (each row in the table)
-            obj = arr[i]; 
-
-            for (key in obj){ //key => "Location", "User", "LocationID", etc.       
-                //alert("key: " + JSON.stringify(key) + "value: " + JSON.stringify(obj[key]));
-    
-                newKey = JSON.stringify(key);
-                value = JSON.stringify(obj[key]); //Must be below key
-                newKey = newKey.replace(/['"]+/g, '');  
-                value = value.replace(/['"]+/g, '');  
-                if((newKey != "Location") && (newKey != "User") )
-
-                {
-                    alert("newKey: " + newKey + "value: " + value);
-                }
-            }
-
+            obj = arr[i];     
+            alert("here!!!");  
+            var locationIDLA = JSON.stringify(obj["LocationID"]); //LocationID
+            alert("lcoationIDLA: " + locationIDLA);
+            locationIDLA = value.replace(/['"]+/g, '');  
+            var userLA = JSON.stringify(obj["Username"]); //Username
+            userLA = value.replace(/['"]+/g, '');  
+            var locationAccessIDLA = JSON.stringify(obj["LocationAccessID"]); //LocationAccessID
+            locationAccessIDLA = value.replace(/['"]+/g, '');  
+            alert("ANOTHER HERE");
+            content += "<tr><td style='display:none' class='TableDataLocationAccessIDLA'>" + locationAccessIDLA + "</td>" //username
+            i++;
+            content += "<td class='TableDataLocationIDLA'>" + locationIDLA + "</td>" //DeviceName
+            i++;
+            content += "<td class='TableDataUserLA'>" + userLA + "</td>" //DeviceLocation
+            content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
         }
+        console.log(dict);
+        version_d = document.getElementById("locationaccesses-table-body");
+        version_d.innerHTML = content;
+        //alert("dict: " + dict.toString());
 
     }
     xhr.send(null);
 }
+
+
+/*$(document).ready(function() {
+    $('#locationaccesses-table-body').DataTable();
+} );*/
