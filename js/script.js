@@ -619,7 +619,7 @@ function locationAccessInit(){
     xhr.send(null);
 }
 
-/* DELETE A DEVICE */
+/* DELETE LOCATION ACCESS */
 function deleteLocationAccess(locationAccessIDLA, locationIDLA, usernameLA){
     var xhr = new XMLHttpRequest();
     var uri = "http://localhost:60724/api/LocationAccesses/" + locationAccessIDLA;
@@ -635,6 +635,101 @@ function deleteLocationAccess(locationAccessIDLA, locationIDLA, usernameLA){
             alert("Failed to delete location access for '" + usernameLA + "'.");
         }
         locationAccessInit();
+    }
+    xhr.send(null);
+}
+
+/* ADD A NEW LOCATION ACCESS */
+function addLocationAccess() {
+    
+    locationsLA = document.getElementById("locationsLA");
+    locationsLA2 = locationsLA.options[locationsLA.selectedIndex].value;
+
+    usersLA = document.getElementById("usersLA");
+    usersLA2 = usersLA.options[usersLA.selectedIndex].value;
+
+    //alert("Here addlocationaccess");
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/LocationAccesses/"
+    xhr.open('POST', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    message = {"LocationID":locationsLA2, "Username":usersLA2};
+    xhr.send(JSON.stringify(message));
+    
+    //alert("message: " + JSON.stringify(message));
+
+    message = "";
+    xhr.onload = function() {
+        //alert(xhr.responseText);
+        console.log(this.responseText);
+        if (xhr.readyState == 4 && xhr.status == "201") {
+            alert("Access granted.");
+        } else {
+            alert("Access allocation already exists.");
+        }
+        locationAccessInit();
+    }
+    
+}
+
+/* SET UP ADD NEW DEVICE MODAL */
+function setUpLocationAccessesModal(){
+    getLocationsLA();
+    getUsersLA();
+}
+
+
+/* GET LOCATIONS LIST */
+function getLocationsLA(){
+    
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Locations"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<option value='" + resultList[i] + "'>" //locationID
+                i++;
+                content += resultList[i] + "</option>" //locationID
+                i++;
+            }
+            version_d = document.getElementById("locationsLA");
+            version_d.innerHTML = content;
+    }
+    xhr.send(null);
+}
+
+
+/* GET USERS LIST */
+function getUsersLA(){
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Users"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+            console.log(this.responseText);
+
+            for (i=0; i<resultListLen-1; i++){
+                content += "<option value='" + resultList[i] + "'>" + resultList[i] + "</option>" //username
+                i++;
+                i++;
+                //content += resultList[i] + "</option>" //password
+                //i++;
+            }
+            version_d = document.getElementById("usersLA");
+            version_d.innerHTML = content;
     }
     xhr.send(null);
 }
