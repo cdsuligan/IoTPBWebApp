@@ -1,6 +1,12 @@
+body{
+    background-color: #18BC9C;
+}
+
+
 #loginForm {
-    text-align: center;
     display: inline-block;
+    margin: none;
+
 }
 
 #loginSubmitBtn {
@@ -13,8 +19,19 @@
     text-align: center;
 }
 
+.home-img{
+    width: 30%;
+    height: 30%;
+}
+
+#portfolio{
+    text-align: center;
+}
+
+
 /* EDIT */
 .addNew:hover {
     text-decoration: underline !important;
     color:white;
 }
+
