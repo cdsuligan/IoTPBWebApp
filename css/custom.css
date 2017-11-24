@@ -53,33 +53,7 @@ body{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* CSS FOR TOGGLE BUTTON STARTS */
 .switch {
   position: relative;
   display: inline-block;
@@ -135,3 +109,5 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/* CSS FOR TOGGLE BUTTON ENDS */

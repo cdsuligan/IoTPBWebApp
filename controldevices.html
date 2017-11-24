@@ -13,6 +13,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     <!-- Theme CSS -->
     <link href="css/freelancer.min.css" rel="stylesheet">
@@ -47,7 +48,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-text">
-                        <h2 class="name">Control Devices</h2>
+                        <h2 class="name" id="control-devices-header">Control Devices</h2>
                     </div>
                 </div>
             </div>
@@ -56,11 +57,10 @@
                 <table class="table">
                     <thead class="thead-inverse">
                         <tr>
-                        <th style="display:none"><h4>LocationID</h4></th>
                         <th id="control-devices-location"><h4>Locations</h4></th>
+                        <th id="control-devices-MAC-address" style="display:none"><h4>MAC Address</h4></th>
                         <th id="control-devices-device" style="display:none"><h4>Devices</h4></th>
                         <th id="control-devices-status" style="display:none"><h4>Status</h4></th>
-                        <th style="display:none"><h4>Description</h4></th>
                         </tr>
                     </thead>
                     <tbody id="control-devices-locations-table-body" style="text-align:left">
@@ -77,6 +77,7 @@
 
     <!-- jQuery -->
     <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>

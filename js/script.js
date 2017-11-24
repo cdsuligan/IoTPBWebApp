@@ -784,8 +784,8 @@ function controlDevicesInit2(locationID){
     document.getElementById('control-devices-status').style.display = 'inline-block';
     document.getElementById('control-devices-location').style.display = 'none';
     document.getElementById('control-devices-device').style.display = 'inline-block';
+    //document.getElementById('control-devices-MAC-address').style.display = 'inline-block';
     document.getElementById('control-devices-locations-table-body').style.display = 'none';
-
 
     var xhr = new XMLHttpRequest();
     var uri = "http://localhost:60724/api/Locations/" + locationID;
@@ -799,27 +799,34 @@ function controlDevicesInit2(locationID){
             resultListLen = resultList.length;
             content = "";
 
+            // Change "Control Devices" header to selected room //OK
+            version_d = document.getElementById("control-devices-header");
+            version_d.innerHTML = resultList[0];
+                     
             console.log(this.responseText);
-            for (i=0; i<resultListLen-1; i++){
-                content += "<tr id='controldevicestr'><td style='display:none' id='TableDataControlDevicesID'>" + resultList[i] + "</td>" //username
+            // Show devices and their status
+            for (i=1; i<resultListLen-1; i++){
+
+
+                content += "<tr><td style='display:none;' id='ControlDevicesMACAddress'>" + resultList[i] + "</td>"; //MAC Address
                 i++;
                 //pass = "*".repeat(resultList[i].length)
                 //alert(pass);
-                content += "<td class='TableDataControlDevicesLocationName'>" + resultList[i] + "</td>" //LocationName
+                content += "<td class='ControlDevicesDevices'>" + resultList[i] + "</td>"; //DeviceName
                 i++;
-                content += "<td class='TableDataControlDevicesLocationDesc'>" + resultList[i] + "</td>" //LocationDesc
-                content += "</tr>";
+                var currentStatus = resultList[i]; //Current status
+                content += "<td class='ControlDevicesStatus'><label class='switch'>";
+
+                if (currentStatus.toUpperCase() === "ON"){ // Current status is ON
+                    content += "<input type='checkbox' checked data-toggle='toggle'>";}
+
+                else {
+                    content += "<input type='checkbox'>";}
+
+                content += "<span class='slider round'></span></label></td></tr>";
             }
-            version_d = document.getElementById("control-devices-locations-table-body");
+            version_d = document.getElementById("control-devices-devices-table-body");
             version_d.innerHTML = content;
-
-
-            $(document).ready(function(){
-            $('tbody#control-devices-locations-table-body tr').on('click',function() {
-                alert($(this).find('td:first').text());
-                controlDevicesInit2();
-            });
-            });
         }
     };
     xhr.send(null);
