@@ -764,17 +764,67 @@ function controlDevicesInit(){
                 content += "<td class='TableDataControlDevicesLocationDesc'>" + resultList[i] + "</td>" //LocationDesc
                 content += "</tr>";
             }
-            version_d = document.getElementById("control-devices-table-body");
+            version_d = document.getElementById("control-devices-locations-table-body");
             version_d.innerHTML = content;
 
 
             $(document).ready(function(){
-            $('tbody#control-devices-table-body tr').on('click',function() {
-                alert($(this).find('td:first').text());
+            $('tbody#control-devices-locations-table-body tr').on('click',function() {
+                //alert($(this).find('td:first').text());
+                controlDevicesInit2($(this).find('td:first').text());
             });
             });
-
         }
     };
     xhr.send(null);
+}
+
+
+function controlDevicesInit2(locationID){
+    document.getElementById('control-devices-status').style.display = 'inline-block';
+    document.getElementById('control-devices-location').style.display = 'none';
+    document.getElementById('control-devices-device').style.display = 'inline-block';
+    document.getElementById('control-devices-locations-table-body').style.display = 'none';
+
+
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Locations/" + locationID;
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+
+            console.log(this.responseText);
+            for (i=0; i<resultListLen-1; i++){
+                content += "<tr id='controldevicestr'><td style='display:none' id='TableDataControlDevicesID'>" + resultList[i] + "</td>" //username
+                i++;
+                //pass = "*".repeat(resultList[i].length)
+                //alert(pass);
+                content += "<td class='TableDataControlDevicesLocationName'>" + resultList[i] + "</td>" //LocationName
+                i++;
+                content += "<td class='TableDataControlDevicesLocationDesc'>" + resultList[i] + "</td>" //LocationDesc
+                content += "</tr>";
+            }
+            version_d = document.getElementById("control-devices-locations-table-body");
+            version_d.innerHTML = content;
+
+
+            $(document).ready(function(){
+            $('tbody#control-devices-locations-table-body tr').on('click',function() {
+                alert($(this).find('td:first').text());
+                controlDevicesInit2();
+            });
+            });
+        }
+    };
+    xhr.send(null);
+
+
+
+
 }
