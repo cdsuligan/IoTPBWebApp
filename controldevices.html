@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Devices</title>
+    <title>Locations</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -22,19 +22,19 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
+    <!-- Custom CSS -->
+    <link  href="css/custom.css" rel="stylesheet">
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-    <!-- Custom CSS -->
-    <link  href="css/custom.css" rel="stylesheet">
-
     <script>
         window.onload = function() {
-        devicesInit();
+        controlDevicesInit();
         };
     </script>
 
@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-text">
-                        <h2 class="name">Devices</h2>
+                        <h2 class="name">Control Devices</h2>
                     </div>
                 </div>
             </div>
@@ -56,63 +56,17 @@
                 <table class="table">
                     <thead class="thead-inverse">
                         <tr>
-                        <th style="display:none"><h4>Device ID</h4></th>
-                        <th><h4>Device Name</h4></th>
+                        <th style="display:none"><h4>LocationID</h4></th>
                         <th><h4>Location</h4></th>
-                        <th><h4>Type</h4></th>
-                        <th><h4>Protocol</h4></th>
-                        <th><h4>Status</h4></th>
-                        <th><h4>Address</h4></th>
+                        <th style="display:none"><h4>Description</h4></th>
                         </tr>
                     </thead>
-                    <tbody id="devices-table-body" style="text-align:left">
+                    <tbody id="control-devices-table-body" style="text-align:left">
                     </tbody>
                 </table>
-                <div style="text-align: left;"><a onclick='return setUpDevicesModal()' href='#' class='addBtn' data-toggle="modal" data-target="#addDeviceModal"><span class='glyphicon glyphicon-plus-sign' style='color:white;'></span><h6 class="addNew" style="color:white; margin-left:10px; display:inline-block;">Add a new device</h6></a></div>
             </div>
         </div>
     </header>
-
-    <!-- Modal -->
-    <div class="modal fade" id="addDeviceModal" role="dialog">
-        <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add a new device</h4>
-            </div>
-            <div class="modal-body">
-            <p></p>
-            <form class="form-inline" >
-                <label for="addDevice" class="sr-only" id="deviceNameInputLabel">Location</label>                
-                <input type="text" placeholder="Device Name" data-minlength="1" maxlength="50" class="form-control" id="deviceNameInput" required>
-                
-                <select name="locations" id="deviceLocations">
-                </select>
-
-                <select name="locations" id="deviceTypes">
-                </select>
-
-                <select name="locations" id="deviceProtocols">
-                </select>
-
-                <select name="locations" id="deviceStatus">
-                </select>
-
-                <label for="addDevice" class="sr-only" id="deviceNameInputLabel">Device Address</label>                
-                <input type="text" placeholder="Device Address" data-minlength="1" maxlength="50" class="form-control" id="deviceAddressInput" required>
-
-            </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="addDevice();" id="addLocationSubmit" class="btn btn-default ">Submit</button>            
-            </div>
-        </div>
-        
-        </div>
-    </div>
-
 
     <!-- Custom JavaScript -->
     <script src="js/script.js"></script>

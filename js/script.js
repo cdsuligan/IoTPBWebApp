@@ -355,7 +355,7 @@ function devicesInit(){
                 content += "<td class='TableDataDeviceAddress'>" + resultList[i] + "</td>" //DeviceAddress
                 content += "<td><a href='#' class='deleteBtn'><span class='glyphicon glyphicon-trash' style='color:white'></span></a></td></tr>";
             }
-            version_d = document.getElementById("locations-table-body");
+            version_d = document.getElementById("devices-table-body");
             version_d.innerHTML = content;
 
             //CLICKED DELETE BUTTON
@@ -735,8 +735,46 @@ function getUsersLA(){
 }
 
 
+/**********************/
+/*** CONTROL DEVICES***/
+/**********************/
+
+function controlDevicesInit(){
+
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/Locations"
+    xhr.open('GET', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.onload = function() {
+        {
+            result = xhr.responseText;
+            result = result.replace(/['"]+/g, '');
+            resultList = result.split("~");
+            resultListLen = resultList.length;
+            content = "";
+
+            console.log(this.responseText);
+            for (i=0; i<resultListLen-1; i++){
+                content += "<tr id='controldevicestr'><td style='display:none' id='TableDataControlDevicesID'>" + resultList[i] + "</td>" //username
+                i++;
+                //pass = "*".repeat(resultList[i].length)
+                //alert(pass);
+                content += "<td class='TableDataControlDevicesLocationName'>" + resultList[i] + "</td>" //LocationName
+                i++;
+                content += "<td class='TableDataControlDevicesLocationDesc'>" + resultList[i] + "</td>" //LocationDesc
+                content += "</tr>";
+            }
+            version_d = document.getElementById("control-devices-table-body");
+            version_d.innerHTML = content;
 
 
-/*$(document).ready(function() {
-    $('#locationaccesses-table-body').DataTable();
-} );*/
+            $(document).ready(function(){
+            $('tbody#control-devices-table-body tr').on('click',function() {
+                alert($(this).find('td:first').text());
+            });
+            });
+
+        }
+    };
+    xhr.send(null);
+}
