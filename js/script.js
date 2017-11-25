@@ -808,7 +808,7 @@ function controlDevicesInit2(locationID){
             for (i=1; i<resultListLen-1; i++){
 
 
-                content += "<tr><td style='display:none;' id='ControlDevicesMACAddress'>" + resultList[i] + "</td>"; //MAC Address
+                content += "<tr><td class='ControlDevicesMACAddress'>" + resultList[i] + "</td>"; //MAC Address
                 i++;
                 //pass = "*".repeat(resultList[i].length)
                 //alert(pass);
@@ -818,20 +818,38 @@ function controlDevicesInit2(locationID){
                 content += "<td class='ControlDevicesStatus'><label class='switch'>";
 
                 if (currentStatus.toUpperCase() === "ON"){ // Current status is ON
-                    content += "<input type='checkbox' checked data-toggle='toggle'>";}
+                    content += "<input class='toggleSwitches' type='checkbox' checked data-toggle='toggle' onclick='javascript:toggle(this);'>";}
 
                 else {
-                    content += "<input type='checkbox'>";}
+                    content += "<input class='toggleSwitches' type='checkbox'>";}
 
                 content += "<span class='slider round'></span></label></td></tr>";
             }
             version_d = document.getElementById("control-devices-devices-table-body");
             version_d.innerHTML = content;
+
+            //CLICKED ONE OF THE TOGGLE BUTTONS
+            $(".toggleSwitches").click(function() {
+                var $ControlDevicesMACAddress = $(this).closest("tr")   // Finds the closest row <tr> 
+                                .find(".ControlDevicesMACAddress") // Gets a descendent with class="nr"
+                                .text();    // Retrieves the text within <td>
+
+                $("#resultas").append($ControlDevicesMACAddress);       // Outputs the answer
+
+                /*var $ToggleSwitchStatus = $(this).checked.value();   // Finds the closest row <tr> 
+
+                $("#resultas").append($ToggleSwitchStatus);       // Outputs the answer*/
+
+
+                alert("ControlDevicesMACAddress: " + $ControlDevicesMACAddress);
+
+            });
         }
     };
     xhr.send(null);
+}
 
-
-
-
+function switchDeviceStatus(toggledSwitchButton){
+    alert("here");
+    alert(toggledSwitchButton);
 }
