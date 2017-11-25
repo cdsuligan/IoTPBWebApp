@@ -836,20 +836,21 @@ function controlDevicesInit2(locationID){
 
                 $("#resultas").append($ControlDevicesMACAddress);       // Outputs the answer
 
-                /*var $ToggleSwitchStatus = $(this).checked.value();   // Finds the closest row <tr> 
+                if($(this).is(':checked')){ // Checks if the user wants to switch ON
+                    switchDeviceStatus($ControlDevicesMACAddress, "ON");
+                    //alert("ControlDevicesMACAddress: " + $ControlDevicesMACAddress + " NewStatus: ON"); // The user wants to switch ON
+                }
 
-                $("#resultas").append($ToggleSwitchStatus);       // Outputs the answer*/
-
-
-                alert("ControlDevicesMACAddress: " + $ControlDevicesMACAddress);
-
+                else{
+                    switchDeviceStatus($ControlDevicesMACAddress, "OFF");
+                    //alert("ControlDevicesMACAddress: " + $ControlDevicesMACAddress + " NewStatus: OFF"); // The user wants to switch OFF
+                }
             });
         }
     };
     xhr.send(null);
 }
 
-function switchDeviceStatus(toggledSwitchButton){
-    alert("here");
-    alert(toggledSwitchButton);
+function switchDeviceStatus(MACAddress, newStatus){
+    alert("MACAddress: " + MACAddress + " newStatus: " + newStatus);
 }
