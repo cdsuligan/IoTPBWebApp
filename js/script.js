@@ -852,5 +852,29 @@ function controlDevicesInit2(locationID){
 }
 
 function switchDeviceStatus(MACAddress, newStatus){
-    alert("MACAddress: " + MACAddress + " newStatus: " + newStatus);
+    //alert("MACAddress: " + MACAddress + " newStatus: " + newStatus);
+
+    var xhr = new XMLHttpRequest();
+    var uri = "http://localhost:60724/api/WebAppToRPi?NewStatus=" + newStatus + "&MACAddress=" + MACAddress; 
+    alert("uri: " + uri);
+    xhr.open('POST', uri, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    //message = {"NewStatus":newStatus, "MACAddress":MACAddress};
+    //xhr.send(JSON.stringify(message));
+    xhr.send(uri);
+    //alert("message: " + JSON.stringify(message));
+    //message = "";
+
+    /*xhr.onload = function() {
+        //alert(xhr.responseText);
+        console.log(this.responseText);
+        if (xhr.readyState == 4 && xhr.status == "201") {
+            alert("Added " + username + " successfully.");
+        } else {
+            alert("Failed to add " + username + ".");
+        }
+        newStatus = "";
+        MACAddress = "";
+    }*/
+
 }
